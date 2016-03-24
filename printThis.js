@@ -26,6 +26,7 @@
  *      printDelay: 333,            * variable print delay
  *      header: null,               * prefix to html
  *      formValues: true            * preserve input/form values
+ *      printCanvas: false,			* To Print Canvas 
  *  });
  *
  * Notes:
@@ -133,6 +134,20 @@
             else $element.each(function() {
                 $body.append($(this).html());
             });
+
+            if (opt.printCanvas) {
+                // get all the canvas in elements container
+                var $canvases = [];
+                $element.find('canvas').each(function() {
+                    $canvases.push($(this)[0]);
+                });
+                // replace all the canvas in $body with image
+                $body.find('canvas').each(function(i) {
+                    var image = new Image();
+                    image.src = $canvases[i].toDataURL("image/png");
+                    $(this).replaceWith( image );
+                });
+            }
 
             // capture form/field values
             if (opt.formValues) {
